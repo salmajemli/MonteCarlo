@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Studies</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Animation specific styles -->
+    <style>
+        .visualization-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .controls {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .image-display {
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Solving the Boltzmann Equation</h1>
+</header>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="contexte.html">Equation Context</a>
+    <a href="methode.html">Monte Carlo Method</a>
+    <a href="etudes.html">Case Studies</a>
+    <a href="sample.html">Sampling</a>
+    <a href="parallel.html">Parallel Results</a>
+    <a href="conclusion.html">Conclusion</a>
+    <a href="bib.html">Bibliography</a>
+</nav>
+<section>
+    <h2>Case Studies</h2>
+    
+    <h3>Advection</h3>
+    <p>This visualization shows the temporal evolution of the Boltzmann equation solution in the case of advection.</p>
+    <div class="visualization-container">
+        <div class="controls">
+            <label for="viewType-advection">View type:</label>
+            <select id="viewType-advection" onchange="updateView('advection')">
+                <option value="3d">3D View</option>
+                <option value="2d">2D View</option>
+            </select>
+            <button onclick="toggleAnimation('advection')" id="playPauseButton-advection">Pause</button>
+            <button onclick="previousFrame('advection')">Previous</button>
+            <button onclick="nextFrame('advection')">Next</button>
+        </div>
+        <div class="image-display">
+            <img id="currentImage-advection" src="images_advection/Sol_Mc0.png" alt="Advection visualization" style="max-width:100%; height:auto;">
+        </div>
+        <div class="controls">
+            <span id="frameCounter-advection">Frame: 0/20</span>
+        </div>
+    </div>
+
+    <h3>Absorption and Transport</h3>
+    <p>This visualization demonstrates the absorption and transport phenomena in the solution.</p>
+    <div class="visualization-container">
+        <div class="controls">
+            <label for="viewType-absorption">View type:</label>
+            <select id="viewType-absorption" onchange="updateView('absorption')">
+                <option value="3d">3D View</option>
+                <option value="2d">2D View</option>
+            </select>
+            <button onclick="toggleAnimation('absorption')" id="playPauseButton-absorption">Pause</button>
+            <button onclick="previousFrame('absorption')">Previous</button>
+            <button onclick="nextFrame('absorption')">Next</button>
+        </div>
+        <div class="image-display">
+            <img id="currentImage-absorption" src="images_absorption/Sol_Mc0.png" alt="Absorption visualization" style="max-width:100%; height:auto;">
+        </div>
+        <div class="controls">
+            <span id="frameCounter-absorption">Frame: 0/20</span>
+        </div>
+    </div>
+
+    <h3>Diffusion Limit</h3>
+    <p>This visualization shows the results obtained using the Monte Carlo method for diffusion.</p>
+    <div class="visualization-container">
+        <div class="controls">
+            <label for="viewType-diffusion">View type:</label>
+            <select id="viewType-diffusion" onchange="updateView('diffusion')">
+                <option value="3d">3D View</option>
+                <option value="2d">2D View</option>
+            </select>
+            <button onclick="toggleAnimation('diffusion')" id="playPauseButton-diffusion">Pause</button>
+            <button onclick="previousFrame('diffusion')">Previous</button>
+            <button onclick="nextFrame('diffusion')">Next</button>
+        </div>
+        <div class="image-display">
+            <img id="currentImage-diffusion" src="images_diffusion/Sol_Mc0.png" alt="Diffusion visualization" style="max-width:100%; height:auto;">
+        </div>
+        <div class="controls">
+            <span id="frameCounter-diffusion">Frame: 0/6</span>
+        </div>
+    </div>
+</section>
+
+<script>
+    const visualizations = {
+        advection: {
+            currentIndex: 0,
+            animationInterval: null,
+            folder: 'images_advection',
+            maxIndex: 20
+        },
+        absorption: {
+            currentIndex: 0,
+            animationInterval: null,
+            folder: 'images_absorption',
+            maxIndex: 20
+        },
+        diffusion: {
+            currentIndex: 0,
+            animationInterval: null,
+            folder: 'images_diffusion',
+            maxIndex: 6  // Changed to 6 frames total, 0-5
+        }
+    };
+
+    const frameDelay = 200;
+
+    function updateImage(type) {
+        const viz = visualizations[type];
+        const viewType = document.getElementById(`viewType-${type}`).value;
+        const prefix = viewType === '3d' ? 'Sol_Mc' : 'Sol_Mc_2D_';
+        const path = `${viz.folder}/${prefix}${viz.currentIndex}.png`;
+        document.getElementById(`currentImage-${type}`).src = path;
+        document.getElementById(`frameCounter-${type}`).textContent = `Frame: ${viz.currentIndex}/${viz.maxIndex}`;
+    }
+
+    function nextFrame(type) {
+        const viz = visualizations[type];
+        viz.currentIndex = (viz.currentIndex + 1) % (viz.maxIndex + 1);
+        updateImage(type);
+    }
+
+    function previousFrame(type) {
+        const viz = visualizations[type];
+        viz.currentIndex = (viz.currentIndex - 1 + (viz.maxIndex + 1)) % (viz.maxIndex + 1);
+        updateImage(type);
+    }
+
+    function toggleAnimation(type) {
+        const viz = visualizations[type];
+        const button = document.getElementById(`playPauseButton-${type}`);
+        
+        if (viz.animationInterval) {
+            clearInterval(viz.animationInterval);
+            viz.animationInterval = null;
+            button.textContent = 'Play';
+        } else {
+            viz.animationInterval = setInterval(() => nextFrame(type), frameDelay);
+            button.textContent = 'Pause';
+        }
+    }
+
+    function updateView(type) {
+        const viz = visualizations[type];
+        viz.currentIndex = 0;
+        updateImage(type);
+        if (viz.animationInterval) {
+            toggleAnimation(type); // Reset animation
+            toggleAnimation(type); // Restart animation
+        }
+    }
+
+    // Start animations when page loads
+    window.onload = function() {
+        ['advection', 'absorption', 'diffusion'].forEach(type => {
+            updateImage(type);
+            visualizations[type].animationInterval = setInterval(() => nextFrame(type), frameDelay);
+        });
+    };
+</script>
+
+<footer class="footer">
+    <p>Academic Project - January 2025</p>
+</footer>
+</body>
+</html>

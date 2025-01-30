@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equation Context</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Configuration MathJax pour un meilleur rendu -->
+    <script type="text/javascript">
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js">
+    </script>
+    <style>
+        .equation {
+            overflow-x: auto;
+            margin: 20px 0;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Solving the Boltzmann Equation</h1>
+</header>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="contexte.html">Equation Context</a>
+    <a href="methode.html">Monte Carlo Method</a>
+    <a href="etudes.html">Case Studies</a>
+    <a href="sample.html">Sampling</a>
+    <a href="parallel.html">Parallel Results</a>
+    <a href="conclusion.html">Conclusion</a>
+    <a href="bib.html">Bibliography</a>
+</nav>
+<!-- Reste du contenu identique -->
+<section>
+    <h2>Equation Context</h2>
+    
+    <h3>Introduction</h3>
+    <p>
+        The Boltzmann equation is fundamental in the kinetic theory of gases, describing the statistical behavior 
+        of a thermodynamic system out of equilibrium. It governs the temporal evolution of the particle 
+        distribution function.
+    </p>
+
+    <h3>Mathematical Formulation</h3>
+    <p>
+        The equation describes the evolution of particle density $u(\mathbf{x}, t, \mathbf{v})$
+        under various phenomena:
+    </p>
+    
+    <div class="equation">
+        $$
+        \frac{\partial u}{\partial t} + \mathbf{v} \cdot \nabla_{\mathbf{x}} u 
+        = -v \sigma_t(\mathbf{x}, \mathbf{v}) u(\mathbf{x}, t, \mathbf{v}) 
+        + \int v \sigma_s(\mathbf{x}, \mathbf{v}, \mathbf{v}') u(\mathbf{x}, t, \mathbf{v}') \, d\mathbf{v}'
+        $$
+    </div>
+
+    <h3>Equation Terms</h3>
+    <ul>
+        <li>$u(\mathbf{x}, t, \mathbf{v})$: Particle density at position $\mathbf{x}$, time $t$, with velocity $\mathbf{v}$</li>
+        <li>$\sigma_t(\mathbf{x}, \mathbf{v})$: Total cross-section quantifying the total interaction rate</li>
+        <li>$\sigma_s(\mathbf{x}, \mathbf{v}, \mathbf{v}')$: Differential scattering cross-section</li>
+        <li>$\mathbf{v} \cdot \nabla_{\mathbf{x}} u$: Transport term representing free particle streaming</li>
+        <li>$-v \sigma_t u$: Absorption term</li>
+        <li>The integral term represents particle gain through scattering</li>
+    </ul>
+
+    <h3>Domain Configuration</h3>
+    <p>
+        The study domain $\Omega$ is typically a three-dimensional volume where particles evolve. 
+        Boundary and initial conditions are essential for solving the equation:
+    </p>
+    <ul>
+        <li>Initial condition: $u(\mathbf{x}, 0, \mathbf{v}) = u_0(\mathbf{x}, \mathbf{v})$</li>
+        <li>Boundary conditions: Depend on physical configuration (reflective, periodic, or inflow)</li>
+    </ul>
+
+    <h3>Fundamental Relations</h3>
+    <p>
+        An important relationship connects the different cross-sections:
+    </p>
+    <div class="equation">
+        $$
+        \sigma_t(\mathbf{x}, \mathbf{v}) = \sigma_a(\mathbf{x}, \mathbf{v}) + \int \sigma_s(\mathbf{x}, \mathbf{v}, \mathbf{v}') \, d\mathbf{v}'
+        $$
+    </div>
+    <p>
+        where $\sigma_a$ represents the absorption cross-section.
+    </p>
+</section>
+<footer class="footer">
+    <p>Academic Project - January 2025</p>
+</footer>
+</body>
+</html>
