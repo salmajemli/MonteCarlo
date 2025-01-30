@@ -26,10 +26,13 @@ double AbstractDomain::initialCondition(const std::vector<double>& x, const std:
 
     switch (this->_simulationParams.Dim) {
         case 1:
-            if ( (x[0]>0.5) && (x[0]<0.55)){
-                u_0 = 1.;
-                break;
+            // if ( (x[0]>-1.0) && (x[0]<1.0)){
+            //     u_0 = cos(2*3.14*x[0]);
+            // }
+            if ( (x[0]>-0.0) && (x[0]<0.7)){
+                u_0 = 2.;
             }
+            break;
 
         case 2:
             u_0 = exp((-(x[0] * x[0]) / 0.0075) + (-(x[1] * x[1]) / 0.0075));
@@ -45,6 +48,8 @@ double AbstractDomain::initialCondition(const std::vector<double>& x, const std:
             else {
                 u_0 = 0.0; // À l'extérieur de la sphère
             }
+
+            break;
 
       
     }
@@ -110,7 +115,6 @@ std::vector<double> AbstractDomain::Vprime(const std::vector<double>& xp, const 
         case 2:
             {
                 std::uniform_real_distribution<double> uniform_real_distribution(0.0, 2.0 * M_PI);
-                std::uniform_real_distribution<double> radius_distribution(0.0,(_simulationParams.xmax - _simulationParams.xmin)/2.);  
                 double tirage = uniform_real_distribution(generator);
                 vprime[0] =  std::cos(tirage);
                 vprime[1] = std::sin(tirage);
@@ -138,12 +142,11 @@ std::vector<double> AbstractDomain::Vprime(const std::vector<double>& xp, const 
 }
 
 
-
     
 std::vector<double> AbstractDomain::SumVec(const std::vector<double> a, const std::vector<double> b) const {
         std::vector<double> result(a.size());
         for (size_t i = 0; i < b.size(); ++i) {
-            result[i]= a[i] - b[i];
+            result[i]= a[i] + b[i];
         }
         return result;
     };
@@ -192,12 +195,10 @@ double AbstractDomain::sampleTau(const std::vector<double>& xp, const double& sp
     // Loi de probabilité simulée
     double factor = v * sigma_t;
    //  return -log(distribution(generator)) / (factor * exp_term) ;
-   //  return factor * exp_term ;
     double epsilon = 1e-1 ; 
-   //  std :: cout << "ici" << std :: endl ;
     if (sigma_t > 0) { return -log(distribution(generator)) / (sigma_t * Norm_v) ; }
     else {return sp + epsilon ;}
-   //  return sp + epsilon ;
+  
 
 }
 
@@ -233,6 +234,7 @@ bool Particle::OutDomain() const
 // Simule le mouvement d'une particule dans le domaine
 void Particle::simulateMotion(double& vect_u)
 {
+//    std :: cout << _sp << std :: endl ;
    while ((this->_sp > 0) and (this->_wp > 0))
    {
       double tau = this->_Domain->sampleTau(this->_xp, this->_sp, this->_vp);
@@ -246,20 +248,27 @@ void Particle::simulateMotion(double& vect_u)
          }
          this->_sp = 0;
          vect_u += this->_wp * this->_Domain->initialCondition(this->_xp, this->_vp);
+
       }
       else
       {
+         
 
          if (Particle::OutDomain())
          {
             this->_Domain->applyBoundaryConditions(this->_xp, tau, this->_vp);
          }
-   
+
+       
          this->_wp *= this->_simulationParams.sigma_S / this->_simulationParams.sigma_T;
-         this->_xp =  this->_Domain ->SumVec( this->_xp , this->_Domain ->dotProductScal(tau, this->_vp) ) ;
 
          this->_vp = this->_Domain->Vprime(this->_xp, this->_sp, tau, this->_vp);
+
+
+        
          this->_sp -= tau;
+         this->_xp =  this->_Domain ->SumVec( this->_xp , this->_Domain ->dotProductScal(tau, this->_vp) ) ;
+
       }
    }
 }

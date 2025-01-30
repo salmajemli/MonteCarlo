@@ -39,7 +39,7 @@ int main(int argc, char const* argv[])
     file.open("Test_Echantillon.txt");
 
 
-    for (int i =0; i < 1000; i++)
+    for (int i =0; i < 10000; i++)
     {
         std::normal_distribution<double> normal_distribution(0.0, 1.0);
         for ( int i = 0 ; i<3 ; i++){

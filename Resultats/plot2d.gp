@@ -12,7 +12,7 @@ set palette defined ( 0 '#F7FBFF',\
 set terminal png
 
 # forcer l'étendue de la colorbar. A changer selon les cas.
-set cbrange [0:1]
+set cbrange [-1:1]
 
 # force la mise à l'échelle des axes.
 set size ratio -1
@@ -32,9 +32,9 @@ do for [i = 0:49] {
     set title "t = ".sprintf("%f", t)." s"." (i = ".sprintf("%d", i).")"
     show title
     ## fait un affichage 2D en couleur
-    plot "solution_t_".i.".txt" u 1:2:5 palette with image
+    #plot "solution_t_".i.".txt" u 1:2:5 palette with image
     # fait un affichage en 3D et en couleur
-    #splot "solution_t_".i.".txt" u 1:2:5 w l palette 
+    splot "solution_t_".i.".txt" u 1:2:5  palette 
     ## A décommenter si affichage classique, et à adapter pour gérer la vitesse d'affichage
     # pause 0.01
 }

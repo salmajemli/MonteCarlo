@@ -28,7 +28,7 @@ def run_test(test_dir, executable_name):
             print(result.stderr)
             return
         else:
-            print(f"Compilation réussie dans {test_dir}.")
+            print(f"Compilation reussie dans {test_dir}.")
 
         # Vérifier si l'exécutable a été généré
         if not os.path.exists(executable_name):
@@ -36,7 +36,7 @@ def run_test(test_dir, executable_name):
             return
 
         # Étape 2 : Exécution de l'application
-        print(f"Exécution de ./{executable_name} dans {test_dir}...")
+        print(f"Execution de ./{executable_name} dans {test_dir}...")
         result = subprocess.run([f"./{executable_name}"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if result.returncode != 0:
             print(f"Erreur lors de l'exécution dans {test_dir} :")

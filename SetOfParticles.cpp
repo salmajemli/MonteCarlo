@@ -20,6 +20,7 @@ void SetOfParticles::simulateMotion()
 {
    for (int i = 0; i < this->_simulationParams.Nmc; i++)
    {
+      // std :: cout << this->_simulationParams.Nmc << std :: endl ;
       Particle particle(this->_Domain, this->_simulationParams, this->_x);
       particle.simulateMotion(_u);
    }

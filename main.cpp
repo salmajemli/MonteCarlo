@@ -36,19 +36,18 @@ int main(int argc, char const* argv[])
 
 
    file.open("Resultats/solution_t_" + std::to_string(0) + ".txt");
+   // file.open("Resultats/space_t_" + std::to_string(0) + ".txt");
    double u ; 
 
-
-
-
-
+   
    for (int i = 0; i < simulationParams.Nx; i++)
    {
       for (int j = 0; j < simulationParams.Ny; j++)
       {
          for (int k = 0; k < simulationParams.Nz; k++)
          {
-            double position_x = simulationParams.xmin + i  * Mesh_size_x;
+            // double position_x = 0.41;
+            double position_x = simulationParams.xmin + i * Mesh_size_x;
             double position_y = simulationParams.ymin + j * Mesh_size_y;
             double position_z = simulationParams.zmin + k * Mesh_size_z;
 
@@ -56,6 +55,8 @@ int main(int argc, char const* argv[])
             u = Domaine->initialCondition({ position_x, position_y, position_z }, simulationParams.velocity);            
 
             file << position_x << "\t" << position_y << "\t" << position_z << "\t" << simulationParams.time << "\t" << u << std::endl;
+            // std::cout << position_x << "\t" << position_y << "\t" << position_z << "\t" << simulationParams.time << "\t" << u << std::endl;
+
          }
       }
    }
@@ -76,6 +77,7 @@ int main(int argc, char const* argv[])
          {
             for (int k = 0; k < simulationParams.Nz; k++)
             {
+               // double position_x = 0.41;
                double position_x = simulationParams.xmin + i * Mesh_size_x;
                double position_y = simulationParams.ymin + j * Mesh_size_y;
                double position_z = simulationParams.zmin + k * Mesh_size_z;
@@ -85,6 +87,8 @@ int main(int argc, char const* argv[])
                SetOfParticles packOfParticles(Domaine, simulationParams, u, { position_x, position_y, position_z }, simulationParams.time);
                packOfParticles.simulateMotion();
                u = packOfParticles.get_u();
+               // std::cout << position_x << "\t" << position_y << "\t" << position_z << "\t" << simulationParams.time << "\t" << u << std::endl;
+
                file << position_x << "\t" << position_y << "\t" << position_z << "\t" << simulationParams.time << "\t" << u << std::endl;
             }
          }
@@ -94,7 +98,7 @@ int main(int argc, char const* argv[])
       
       file.close();
    }
-
+   // file.close();
 
    delete Domaine;
 
